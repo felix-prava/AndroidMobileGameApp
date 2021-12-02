@@ -2,14 +2,22 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView bird, enemy1, enemy2, enemy3, coin, volumeUp;
+    private ImageView bird, enemy1, enemy2, enemy3, coin, volume;
     private Button startButton;
+    private Animation animation;
+    private MediaPlayer mediaPlayer;
+    private boolean status = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +29,47 @@ public class MainActivity extends AppCompatActivity {
         enemy2 = findViewById(R.id.birdTwo);
         enemy3 = findViewById(R.id.birdThree);
         coin = findViewById(R.id.coin);
-        volumeUp = findViewById(R.id.volume);
+        volume = findViewById(R.id.volume);
         startButton = findViewById(R.id.startButton);
+
+        animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_animation);
+        bird.setAnimation(animation);
+        enemy1.setAnimation(animation);
+        enemy2.setAnimation(animation);
+        enemy3.setAnimation(animation);
+        coin.setAnimation(animation);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.never_gonna_give_you_up_original);
+        mediaPlayer.start();
+
+        volume.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!status) {
+                    mediaPlayer.setVolume(0, 0);
+                    volume.setImageResource(R.drawable.volume_off);
+                    status = true;
+                } else {
+                    mediaPlayer.setVolume(1, 1);
+                    volume.setImageResource(R.drawable.volume_up);
+                    status = false;
+                }
+            }
+        });
+
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.reset();
+                volume.setImageResource(R.drawable.volume_up);
+                Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
