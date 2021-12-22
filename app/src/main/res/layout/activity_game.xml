@@ -14,18 +14,22 @@
         android:layout_width="47dp"
         android:layout_height="29dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.537"
+        app:layout_constraintStart_toEndOf="@+id/textViewScore"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/red_heart"
-        tools:layout_editor_absoluteX="407dp" />
+        app:srcCompat="@drawable/red_heart" />
 
     <ImageView
         android:id="@+id/imageViewHeart2"
         android:layout_width="47dp"
         android:layout_height="29dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.433"
+        app:layout_constraintStart_toEndOf="@+id/textViewScore"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/red_heart"
-        tools:layout_editor_absoluteX="342dp" />
+        app:srcCompat="@drawable/red_heart" />
 
     <ImageView
         android:id="@+id/imageViewBird"
@@ -126,7 +130,9 @@
         android:layout_width="47dp"
         android:layout_height="29dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.343"
+        app:layout_constraintStart_toEndOf="@+id/imageViewScore"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/red_heart"
-        tools:layout_editor_absoluteX="279dp" />
+        app:srcCompat="@drawable/red_heart" />
 </androidx.constraintlayout.widget.ConstraintLayout>
