@@ -21,8 +21,8 @@ public class GameActivity extends AppCompatActivity {
     private TextView textViewScore, textViewStartInfo;
     private ConstraintLayout constraintLayout;
     private boolean touchControl = false, beginControl = false;
-    private Runnable runnable;
-    private Handler handler;
+    private Runnable runnable, secondRunnable;
+    private Handler handler, secondHandler;
 
     // positions
     int birdX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
@@ -245,12 +245,38 @@ public class GameActivity extends AppCompatActivity {
             handler.postDelayed(runnable, 20);
         } else if (score >= 200) {
             handler.removeCallbacks(runnable);
+            constraintLayout.setEnabled(false);
+            textViewStartInfo.setVisibility(View.VISIBLE);
+            textViewStartInfo.setText("Congratulations! You won!");
+            enemy1.setVisibility(View.INVISIBLE);
+            enemy2.setVisibility(View.INVISIBLE);
+            enemy3.setVisibility(View.INVISIBLE);
+            coin1.setVisibility(View.INVISIBLE);
+            coin2.setVisibility(View.INVISIBLE);
+
+            secondHandler = new Handler();
+            secondRunnable = () -> {
+                birdX = birdX + (screenWidth / 300);
+                bird.setX(birdX);
+                bird.setY(screenHeight / 2f);
+                if (birdX <= screenWidth) {
+                    secondHandler.postDelayed(secondRunnable, 20);
+                } else {
+                    secondHandler.removeCallbacks(secondRunnable);
+                    Intent intent = new Intent(GameActivity.this, ResultActivity.class);
+                    intent.putExtra("score", score);
+                    startActivity(intent);
+                    finish();
+                }
+            };
+            secondHandler.post(secondRunnable);
         } else if (lives == 0) {
             handler.removeCallbacks(runnable);
             heart3.setImageResource(R.drawable.black_heart);
             Intent intent = new Intent(GameActivity.this, ResultActivity.class);
             intent.putExtra("score", score);
             startActivity(intent);
+            finish();
         }
     }
 }
