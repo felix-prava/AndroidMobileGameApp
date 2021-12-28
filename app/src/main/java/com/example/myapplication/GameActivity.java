@@ -222,8 +222,8 @@ public class GameActivity extends AppCompatActivity {
                 centerCoin1Y >= birdY && centerCoin1Y <= birdY + bird.getHeight())
         {
             coin1X = screenWidth + 200;
-            textViewScore.setText("" + score);
             score += 10;
+            textViewScore.setText("" + score);
         }
 
         int centerCoin2X = coin2X + coin2.getWidth() / 2;
@@ -232,8 +232,8 @@ public class GameActivity extends AppCompatActivity {
                 centerCoin2Y >= birdY && centerCoin2Y <= birdY + bird.getHeight())
         {
             coin2X = screenWidth + 200;
-            textViewScore.setText("" + score);
             score += 10;
+            textViewScore.setText("" + score);
         }
 
         if (lives > 0 && score < 200) {
