@@ -28,12 +28,22 @@ public class MainMenuActivity extends AppCompatActivity {
         goToShop = findViewById(R.id.goToShopButton);
 
         playGame.setOnClickListener(v -> {
+            sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
+            int level = sharedPreferences.getInt("level", 1);
+
             Intent intent = new Intent(MainMenuActivity.this, MainActivity.class);
+            if (level < 10) {
+                intent.putExtra("targetScore", level * 50 + 50);
+            } else {
+                intent.putExtra("targetScore", 10000);
+            }
+            intent.putExtra("level", level  );
             startActivity(intent);
         });
 
         selectLevel.setOnClickListener(v -> {
-            // TO DO
+            Intent intent = new Intent(MainMenuActivity.this, SelectLevelActivity.class);
+            startActivity(intent);
         });
 
         selectDifficulty.setOnClickListener(v -> {
@@ -41,7 +51,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         viewHighScore.setOnClickListener(v -> {
-            sharedPreferences = this.getSharedPreferences("score", Context.MODE_PRIVATE);
+            sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
             int highestScore = sharedPreferences.getInt("highestScore", 0);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainMenuActivity.this);
