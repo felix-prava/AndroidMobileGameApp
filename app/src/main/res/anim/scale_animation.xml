@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <scale
+        android:duration="2000"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:fromXScale="0.51"
+        android:toXScale="1.01"
+        android:fromYScale="0.51"
+        android:toYScale="1.01"
+        android:repeatCount="250"
+        android:repeatMode="reverse"/>
+</set>
