@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity {
     private boolean touchControl = false, beginControl = false;
     private Runnable runnable, secondRunnable;
     private Handler handler, secondHandler;
+    private int targetScore, level;
 
     // positions
     int birdX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
@@ -42,6 +43,9 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        targetScore = getIntent().getIntExtra("targetScore", 100);
+        level = getIntent().getIntExtra("level", 1);
 
         bird = findViewById(R.id.imageViewBird);
         enemy1 = findViewById(R.id.imageViewEnemy1);
@@ -236,14 +240,14 @@ public class GameActivity extends AppCompatActivity {
             textViewScore.setText("" + score);
         }
 
-        if (lives > 0 && score < 200) {
+        if (lives > 0 && score < targetScore) {
             if (lives == 2) {
                 heart1.setImageResource(R.drawable.black_heart);
             } else if (lives == 1) {
                 heart2.setImageResource(R.drawable.black_heart);
             }
             handler.postDelayed(runnable, 20);
-        } else if (score >= 200) {
+        } else if (score >= targetScore) {
             handler.removeCallbacks(runnable);
             constraintLayout.setEnabled(false);
             textViewStartInfo.setVisibility(View.VISIBLE);
@@ -265,6 +269,8 @@ public class GameActivity extends AppCompatActivity {
                     secondHandler.removeCallbacks(secondRunnable);
                     Intent intent = new Intent(GameActivity.this, ResultActivity.class);
                     intent.putExtra("score", score);
+                    intent.putExtra("targetScore", targetScore);
+                    intent.putExtra("level", level  );
                     startActivity(intent);
                     finish();
                 }
@@ -275,6 +281,8 @@ public class GameActivity extends AppCompatActivity {
             heart3.setImageResource(R.drawable.black_heart);
             Intent intent = new Intent(GameActivity.this, ResultActivity.class);
             intent.putExtra("score", score);
+            intent.putExtra("targetScore", targetScore);
+            intent.putExtra("level", level  );
             startActivity(intent);
             finish();
         }

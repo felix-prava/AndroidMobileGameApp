@@ -47,29 +47,27 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(MainActivity.this, R.raw.never_gonna_give_you_up_original);
         mediaPlayer.start();
 
-        volume.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!status) {
-                    mediaPlayer.setVolume(0, 0);
-                    volume.setImageResource(R.drawable.volume_off);
-                    status = true;
-                } else {
-                    mediaPlayer.setVolume(1, 1);
-                    volume.setImageResource(R.drawable.volume_up);
-                    status = false;
-                }
+        volume.setOnClickListener(v -> {
+            if (!status) {
+                mediaPlayer.setVolume(0, 0);
+                volume.setImageResource(R.drawable.volume_off);
+                status = true;
+            } else {
+                mediaPlayer.setVolume(1, 1);
+                volume.setImageResource(R.drawable.volume_up);
+                status = false;
             }
         });
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayer.reset();
-                volume.setImageResource(R.drawable.volume_up);
-                Intent intent = new Intent(MainActivity.this, GameActivity.class);
-                startActivity(intent);
-            }
+        startButton.setOnClickListener(v -> {
+            mediaPlayer.reset();
+            volume.setImageResource(R.drawable.volume_up);
+            Intent intent = new Intent(MainActivity.this, GameActivity.class);
+            int targetScore = getIntent().getIntExtra("targetScore", 100);
+            int level = getIntent().getIntExtra("level", 1);
+            intent.putExtra("targetScore", targetScore);
+            intent.putExtra("level", level  );
+            startActivity(intent);
         });
     }
 }

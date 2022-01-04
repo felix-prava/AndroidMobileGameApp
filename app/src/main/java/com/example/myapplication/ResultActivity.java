@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,7 +15,7 @@ public class ResultActivity extends AppCompatActivity {
 
     private TextView textViewResultInfo, textViewMyScore, textViewHighestScore;
     private Button playAgainButton;
-    private int score;
+    private int score, targetScore, level;
 
     private SharedPreferences sharedPreferences;
 
@@ -24,6 +23,9 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+        targetScore = getIntent().getIntExtra("targetScore", 100);
+        level = getIntent().getIntExtra("level", 1);
 
         textViewResultInfo = findViewById(R.id.textViewResultInfo);
         textViewHighestScore = findViewById(R.id.textViewHighestScore);
@@ -33,29 +35,27 @@ public class ResultActivity extends AppCompatActivity {
         score = getIntent().getIntExtra("score", 0);
         textViewMyScore.setText("Your Score: " + score);
 
-        sharedPreferences = this.getSharedPreferences("score", Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int highestScore = sharedPreferences.getInt("highestScore", 0);
+        highestScore = Math.max(highestScore, score);
 
-        if (score >= 200) {
+        if (score >= targetScore) {
             textViewResultInfo.setText("You Won The Game!");
-            textViewHighestScore.setText("Highest Score: " + score);
-            sharedPreferences.edit().putInt("highestScore", score).apply();
-        } else if (score >= highestScore) {
-            textViewResultInfo.setText("Sorry, You Lost..");
-            textViewHighestScore.setText("Highest Score: " + score);
-            sharedPreferences.edit().putInt("highestScore", score).apply();
+            if (level < 10) {
+                sharedPreferences.edit().putInt("level", level + 1).apply();
+            }
         } else {
             textViewResultInfo.setText("Sorry, You Lost..");
-            textViewHighestScore.setText("Highest Score: " + highestScore);
         }
+        textViewHighestScore.setText("Highest Score: " + highestScore);
+        sharedPreferences.edit().putInt("highestScore", highestScore).apply();
 
-        playAgainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ResultActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        playAgainButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ResultActivity.this, MainActivity.class);
+            intent.putExtra("targetScore", targetScore);
+            intent.putExtra("level", level  );
+            startActivity(intent);
+            finish();
         });
     }
 
