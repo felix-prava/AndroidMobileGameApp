@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -23,6 +25,7 @@ public class GameActivity extends AppCompatActivity {
     private boolean touchControl = false, beginControl = false;
     private Runnable runnable, secondRunnable;
     private Handler handler, secondHandler;
+    private SharedPreferences sharedPreferences;
     private int targetScore, level;
 
     // positions
@@ -47,7 +50,13 @@ public class GameActivity extends AppCompatActivity {
         targetScore = getIntent().getIntExtra("targetScore", 100);
         level = getIntent().getIntExtra("level", 1);
 
+        sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
+        int playerSkin = sharedPreferences.getInt("playerSkin", 1);
+
         bird = findViewById(R.id.imageViewBird);
+        if (playerSkin == 2) {
+            bird.setImageDrawable(getResources().getDrawable(R.drawable.dragon_image, getApplicationContext().getTheme()));
+        }
         enemy1 = findViewById(R.id.imageViewEnemy1);
         enemy2 = findViewById(R.id.imageViewEnemy2);
         enemy3 = findViewById(R.id.imageViewEnemy3);
