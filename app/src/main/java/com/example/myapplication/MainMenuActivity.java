@@ -27,6 +27,8 @@ public class MainMenuActivity extends AppCompatActivity {
         addCoins = findViewById(R.id.addCoinsButton);
         goToShop = findViewById(R.id.goToShopButton);
 
+        copyDataBase();
+
         playGame.setOnClickListener(v -> {
             sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
             int level = sharedPreferences.getInt("level", 1);
@@ -55,7 +57,7 @@ public class MainMenuActivity extends AppCompatActivity {
             int highestScore = sharedPreferences.getInt("highestScore", 0);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainMenuActivity.this);
-            builder.setTitle("Test Title");
+            builder.setTitle("");
             builder.setMessage("Highest Score: " + highestScore);
             builder.setCancelable(false);
             builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
@@ -63,12 +65,34 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         addCoins.setOnClickListener(v -> {
-            // TO DO
+            sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
+            boolean userCanPlay = sharedPreferences.getBoolean("userCanPlay", true);
+            if (userCanPlay) {
+                Intent intent = new Intent(MainMenuActivity.this, QuizActivity.class);
+                startActivity(intent);
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainMenuActivity.this);
+                builder.setTitle("");
+                builder.setMessage("You must play a game before trying to earn more coins!");
+                builder.setCancelable(false);
+                builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
+                builder.create().show();
+            }
         });
 
         goToShop.setOnClickListener(v -> {
             Intent intent = new Intent(MainMenuActivity.this, ShopActivity.class);
             startActivity(intent);
         });
+    }
+
+    public void copyDataBase() {
+        try {
+            DatabaseCopyHelper helper = new DatabaseCopyHelper(MainMenuActivity.this);
+            helper.createDataBase();
+            helper.openDataBase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
