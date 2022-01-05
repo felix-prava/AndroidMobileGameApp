@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class ResultActivity extends AppCompatActivity {
 
     private TextView textViewResultInfo, textViewMyScore, textViewHighestScore;
-    private Button playAgainButton;
+    private Button playAgainButton, goToMainMenu;
     private int score, targetScore, level;
 
     private SharedPreferences sharedPreferences;
@@ -31,11 +31,13 @@ public class ResultActivity extends AppCompatActivity {
         textViewHighestScore = findViewById(R.id.textViewHighestScore);
         textViewMyScore = findViewById(R.id.textViewMyScore);
         playAgainButton = findViewById(R.id.buttonPlayAgain);
+        goToMainMenu = findViewById(R.id.buttonMainMenu);
 
         score = getIntent().getIntExtra("score", 0);
         sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int prevScore = sharedPreferences.getInt("coins", 0);
         sharedPreferences.edit().putInt("coins", score + prevScore).apply();
+        sharedPreferences.edit().putBoolean("userCanPlay", true).apply();
         textViewMyScore.setText("Your Score: " + score);
 
         int highestScore = sharedPreferences.getInt("highestScore", 0);
@@ -59,12 +61,17 @@ public class ResultActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        goToMainMenu.setOnClickListener(v -> {
+            Intent intent = new Intent(ResultActivity.this, MainMenuActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ResultActivity.this);
-        builder.setTitle("Test Title");
+        builder.setTitle("");
         builder.setMessage("Are You Sure You Want To Quit The Game?");
         builder.setCancelable(false);
         builder.setNegativeButton("Quit Game", (dialog, which) -> {
