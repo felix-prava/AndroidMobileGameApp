@@ -67,7 +67,8 @@ public class MainMenuActivity extends AppCompatActivity {
         });
 
         goToShop.setOnClickListener(v -> {
-            // TO DO
+            Intent intent = new Intent(MainMenuActivity.this, ShopActivity.class);
+            startActivity(intent);
         });
     }
 }

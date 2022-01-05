@@ -41,6 +41,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bird4" />
 
+    <ImageView
+        android:id="@+id/imageViewDragon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="50dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dragon_image" />
+
     <TextView
         android:id="@+id/textViewStartInfo"
         android:layout_width="match_parent"
@@ -135,4 +146,5 @@
         app:layout_constraintStart_toEndOf="@+id/imageViewScore"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/red_heart" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

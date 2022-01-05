@@ -33,9 +33,11 @@ public class ResultActivity extends AppCompatActivity {
         playAgainButton = findViewById(R.id.buttonPlayAgain);
 
         score = getIntent().getIntExtra("score", 0);
+        sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
+        int prevScore = sharedPreferences.getInt("coins", 0);
+        sharedPreferences.edit().putInt("coins", score + prevScore).apply();
         textViewMyScore.setText("Your Score: " + score);
 
-        sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int highestScore = sharedPreferences.getInt("highestScore", 0);
         highestScore = Math.max(highestScore, score);
 
