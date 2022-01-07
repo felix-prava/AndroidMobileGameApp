@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -26,7 +26,8 @@ public class GameActivity extends AppCompatActivity {
     private Runnable runnable, secondRunnable;
     private Handler handler, secondHandler;
     private SharedPreferences sharedPreferences;
-    private int targetScore, level;
+    private int targetScore, level, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
+    private Map<Integer, Integer> backgroundMap;
 
     // positions
     int birdX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
@@ -53,9 +54,9 @@ public class GameActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int playerSkin = sharedPreferences.getInt("playerSkin", 1);
 
-        bird = findViewById(R.id.imageViewBird);
+        bird = findViewById(R.id.imageViewPlayer);
         if (playerSkin == 2) {
-            bird.setImageDrawable(getResources().getDrawable(R.drawable.dragon_image, getApplicationContext().getTheme()));
+            bird.setImageDrawable(getResources().getDrawable(R.drawable.player2, getApplicationContext().getTheme()));
         }
         enemy1 = findViewById(R.id.imageViewEnemy1);
         enemy2 = findViewById(R.id.imageViewEnemy2);
@@ -67,7 +68,21 @@ public class GameActivity extends AppCompatActivity {
         heart3 = findViewById(R.id.imageViewHeart3);
         textViewScore = findViewById(R.id.textViewScore);
         textViewStartInfo = findViewById(R.id.textViewStartInfo);
-        constraintLayout = findViewById(R.id.constraintLayout);
+        constraintLayout = findViewById(R.id.constraintLayoutGame);
+
+        backgroundImage2 = R.drawable.background_image2;
+        backgroundImage3 = R.drawable.background_image3;
+        backgroundImage4 = R.drawable.background_image4;
+        backgroundImage5 = R.drawable.background_image5;
+        backgroundMap = new HashMap<>();
+        backgroundMap.put(2, backgroundImage2);
+        backgroundMap.put(3, backgroundImage3);
+        backgroundMap.put(4, backgroundImage4);
+        backgroundMap.put(5, backgroundImage5);
+        int backgroundImage = (int) ((Math.random() * 4) + 1);
+        if (backgroundImage > 1) {
+            constraintLayout.setBackgroundResource(backgroundMap.get(backgroundImage));
+        }
 
         constraintLayout.setOnTouchListener(new View.OnTouchListener() {
             @SuppressLint("ClickableViewAccessibility")

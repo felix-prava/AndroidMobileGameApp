@@ -10,14 +10,21 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView bird, enemy1, enemy2, enemy3, coin, volume;
+    private LinearLayout layout;
     private Button startButton;
     private Animation animation;
     private MediaPlayer mediaPlayer;
     private boolean status = false;
+    private int backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
+    private Map<Integer, Integer> backgroundMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +45,21 @@ public class MainActivity extends AppCompatActivity {
         enemy2.setAnimation(animation);
         enemy3.setAnimation(animation);
         coin.setAnimation(animation);
+
+        layout = findViewById(R.id.linearLayoutGame);
+        backgroundImage2 = R.drawable.background_image2;
+        backgroundImage3 = R.drawable.background_image3;
+        backgroundImage4 = R.drawable.background_image4;
+        backgroundImage5 = R.drawable.background_image5;
+        backgroundMap = new HashMap<>();
+        backgroundMap.put(2, backgroundImage2);
+        backgroundMap.put(3, backgroundImage3);
+        backgroundMap.put(4, backgroundImage4);
+        backgroundMap.put(5, backgroundImage5);
+        int backgroundImage = (int) ((Math.random() * 4) + 1);
+        if (backgroundImage > 1) {
+            layout.setBackgroundResource(backgroundMap.get(backgroundImage));
+        }
     }
 
     @Override
