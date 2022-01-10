@@ -11,10 +11,12 @@
         android:theme="@style/Theme.MyApplication">
         <activity
             android:name=".QuizResultActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".QuizActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ShopActivity"
             android:exported="false"

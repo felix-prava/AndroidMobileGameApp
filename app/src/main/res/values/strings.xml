@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="start_game_button">Start Game</string>
-    <string name="game_rules">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="game_rules">Do you think you can survive the apocalypse? Defeat the enemies and try to save the world!</string>
 </resources>

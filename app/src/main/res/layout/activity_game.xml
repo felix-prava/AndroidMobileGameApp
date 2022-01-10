@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/constraintLayoutGame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_image"
+    android:background="@drawable/background_image1"
     android:textAlignment="textEnd"
     tools:context=".GameActivity">
 
@@ -32,14 +32,14 @@
         app:srcCompat="@drawable/red_heart" />
 
     <ImageView
-        android:id="@+id/imageViewBird"
+        android:id="@+id/imageViewPlayer"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bird4" />
+        app:srcCompat="@drawable/player_default" />
 
     <ImageView
         android:id="@+id/imageViewDragon"
@@ -80,8 +80,8 @@
 
     <ImageView
         android:id="@+id/imageViewCoin2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
         android:visibility="invisible"
         app:srcCompat="@drawable/coin_image"
         tools:layout_editor_absoluteX="663dp"
@@ -92,7 +92,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/bird1"
+        app:srcCompat="@drawable/enemy1"
         tools:layout_editor_absoluteX="663dp"
         tools:layout_editor_absoluteY="150dp" />
 
@@ -101,7 +101,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/bird2"
+        app:srcCompat="@drawable/enemy2"
         tools:layout_editor_absoluteX="663dp"
         tools:layout_editor_absoluteY="215dp" />
 
@@ -110,16 +110,14 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/bird3"
+        app:srcCompat="@drawable/enemy3"
         tools:layout_editor_absoluteX="663dp"
         tools:layout_editor_absoluteY="278dp" />
 
     <ImageView
         android:id="@+id/imageViewScore"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/coin_image" />
@@ -128,8 +126,8 @@
         android:id="@+id/textViewScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="10dp"
         android:text="0"
         android:textColor="#366991"
         android:textSize="18sp"
