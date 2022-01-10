@@ -2,7 +2,9 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -17,21 +19,25 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView bird, enemy1, enemy2, enemy3, coin, volume;
+    private ImageView player, enemy1, enemy2, enemy3, coin, volume;
     private LinearLayout layout;
     private Button startButton;
     private Animation animation;
     private MediaPlayer mediaPlayer;
+    private SharedPreferences sharedPreferences;
     private boolean status = false;
     private int backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
-    private Map<Integer, Integer> backgroundMap;
+    private Map<Integer, Integer> backgroundMap, playerMap;
+
+    // players
+    private int player2, player3, player4, player5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bird = findViewById(R.id.birdFour);
+        player = findViewById(R.id.birdFour);
         enemy1 = findViewById(R.id.birdOne);
         enemy2 = findViewById(R.id.birdTwo);
         enemy3 = findViewById(R.id.birdThree);
@@ -40,22 +46,21 @@ public class MainActivity extends AppCompatActivity {
         startButton = findViewById(R.id.startButton);
 
         animation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.scale_animation);
-        bird.setAnimation(animation);
+        player.setAnimation(animation);
         enemy1.setAnimation(animation);
         enemy2.setAnimation(animation);
         enemy3.setAnimation(animation);
         coin.setAnimation(animation);
 
+        initializeMaps();
+
+        sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
+        int playerSkin = sharedPreferences.getInt("playerSkin", 1);
+        if (playerSkin > 1) {
+            player.setImageDrawable(getResources().getDrawable(playerMap.get(playerSkin), getApplicationContext().getTheme()));
+        }
+
         layout = findViewById(R.id.linearLayoutGame);
-        backgroundImage2 = R.drawable.background_image2;
-        backgroundImage3 = R.drawable.background_image3;
-        backgroundImage4 = R.drawable.background_image4;
-        backgroundImage5 = R.drawable.background_image5;
-        backgroundMap = new HashMap<>();
-        backgroundMap.put(2, backgroundImage2);
-        backgroundMap.put(3, backgroundImage3);
-        backgroundMap.put(4, backgroundImage4);
-        backgroundMap.put(5, backgroundImage5);
         int backgroundImage = (int) ((Math.random() * 4) + 1);
         if (backgroundImage > 1) {
             layout.setBackgroundResource(backgroundMap.get(backgroundImage));
@@ -91,5 +96,29 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("level", level  );
             startActivity(intent);
         });
+    }
+
+    private void initializeMaps() {
+        // Background image map
+        backgroundImage2 = R.drawable.background_image2;
+        backgroundImage3 = R.drawable.background_image3;
+        backgroundImage4 = R.drawable.background_image4;
+        backgroundImage5 = R.drawable.background_image5;
+        backgroundMap = new HashMap<>();
+        backgroundMap.put(2, backgroundImage2);
+        backgroundMap.put(3, backgroundImage3);
+        backgroundMap.put(4, backgroundImage4);
+        backgroundMap.put(5, backgroundImage5);
+
+        // Player skin map
+        player2 = R.drawable.player2;
+        player3 = R.drawable.player3;
+        player4 = R.drawable.player4;
+        player5 = R.drawable.player5;
+        playerMap = new HashMap<>();
+        playerMap.put(2, player2);
+        playerMap.put(3, player3);
+        playerMap.put(4, player4);
+        playerMap.put(5, player5);
     }
 }

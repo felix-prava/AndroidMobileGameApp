@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class GameActivity extends AppCompatActivity {
 
-    private ImageView bird, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3;
+    private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3;
     private TextView textViewScore, textViewStartInfo;
     private ConstraintLayout constraintLayout;
     private boolean touchControl = false, beginControl = false;
@@ -27,7 +27,7 @@ public class GameActivity extends AppCompatActivity {
     private Handler handler, secondHandler;
     private SharedPreferences sharedPreferences;
     private int targetScore, level, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
-    private Map<Integer, Integer> backgroundMap;
+    private Map<Integer, Integer> backgroundMap, playerMap;
 
     // positions
     int birdX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
@@ -42,6 +42,9 @@ public class GameActivity extends AppCompatActivity {
     // coins
     int score = 0;
 
+    // players
+    int player2, player3, player4, player5;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,12 @@ public class GameActivity extends AppCompatActivity {
         sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int playerSkin = sharedPreferences.getInt("playerSkin", 1);
 
-        bird = findViewById(R.id.imageViewPlayer);
-        if (playerSkin == 2) {
-            bird.setImageDrawable(getResources().getDrawable(R.drawable.player2, getApplicationContext().getTheme()));
+        player = findViewById(R.id.imageViewPlayer);
+        initializeMaps();
+        if (playerSkin > 1) {
+            player.setImageDrawable(getResources().getDrawable(playerMap.get(playerSkin), getApplicationContext().getTheme()));
         }
+
         enemy1 = findViewById(R.id.imageViewEnemy1);
         enemy2 = findViewById(R.id.imageViewEnemy2);
         enemy3 = findViewById(R.id.imageViewEnemy3);
@@ -70,15 +75,6 @@ public class GameActivity extends AppCompatActivity {
         textViewStartInfo = findViewById(R.id.textViewStartInfo);
         constraintLayout = findViewById(R.id.constraintLayoutGame);
 
-        backgroundImage2 = R.drawable.background_image2;
-        backgroundImage3 = R.drawable.background_image3;
-        backgroundImage4 = R.drawable.background_image4;
-        backgroundImage5 = R.drawable.background_image5;
-        backgroundMap = new HashMap<>();
-        backgroundMap.put(2, backgroundImage2);
-        backgroundMap.put(3, backgroundImage3);
-        backgroundMap.put(4, backgroundImage4);
-        backgroundMap.put(5, backgroundImage5);
         int backgroundImage = (int) ((Math.random() * 4) + 1);
         if (backgroundImage > 1) {
             constraintLayout.setBackgroundResource(backgroundMap.get(backgroundImage));
@@ -96,8 +92,8 @@ public class GameActivity extends AppCompatActivity {
                     screenWidth = (int) constraintLayout.getWidth();
                     screenHeight = (int) constraintLayout.getHeight();
                     // get bird's position
-                    birdX = (int) bird.getX();
-                    birdY = (int) bird.getY();
+                    birdX = (int) player.getX();
+                    birdY = (int) player.getY();
 
                     handler = new Handler();
                     runnable = () -> {
@@ -127,10 +123,10 @@ public class GameActivity extends AppCompatActivity {
         if (birdY <= 0) {
             birdY = 0;
         }
-        if (birdY >= screenHeight - bird.getHeight()) {
-            birdY = screenHeight - bird.getHeight();
+        if (birdY >= screenHeight - player.getHeight()) {
+            birdY = screenHeight - player.getHeight();
         }
-        bird.setY(birdY);
+        player.setY(birdY);
     }
 
     public void enemyControl() {
@@ -219,8 +215,8 @@ public class GameActivity extends AppCompatActivity {
     public void collisionControl() {
         int centerEnemy1X = enemy1X + enemy1.getWidth() / 2;
         int centerEnemy1Y = enemy1Y + enemy1.getHeight() / 2;
-        if (centerEnemy1X >= birdX && centerEnemy1X <= birdX + bird.getWidth() &&
-            centerEnemy1Y >= birdY && centerEnemy1Y <= birdY + bird.getHeight())
+        if (centerEnemy1X >= birdX && centerEnemy1X <= birdX + player.getWidth() &&
+            centerEnemy1Y >= birdY && centerEnemy1Y <= birdY + player.getHeight())
         {
             enemy1X = screenWidth + 200;
             lives--;;
@@ -228,8 +224,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerEnemy2X = enemy2X + enemy2.getWidth() / 2;
         int centerEnemy2Y = enemy2Y + enemy2.getHeight() / 2;
-        if (centerEnemy2X >= birdX && centerEnemy2X <= birdX + bird.getWidth() &&
-                centerEnemy2Y >= birdY && centerEnemy2Y <= birdY + bird.getHeight())
+        if (centerEnemy2X >= birdX && centerEnemy2X <= birdX + player.getWidth() &&
+                centerEnemy2Y >= birdY && centerEnemy2Y <= birdY + player.getHeight())
         {
             enemy2X = screenWidth + 200;
             lives--;;
@@ -237,8 +233,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerEnemy3X = enemy3X + enemy3.getWidth() / 2;
         int centerEnemy3Y = enemy3Y + enemy3.getHeight() / 2;
-        if (centerEnemy3X >= birdX && centerEnemy3X <= birdX + bird.getWidth() &&
-                centerEnemy3Y >= birdY && centerEnemy3Y <= birdY + bird.getHeight())
+        if (centerEnemy3X >= birdX && centerEnemy3X <= birdX + player.getWidth() &&
+                centerEnemy3Y >= birdY && centerEnemy3Y <= birdY + player.getHeight())
         {
             enemy3X = screenWidth + 200;
             lives--;;
@@ -246,8 +242,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerCoin1X = coin1X + coin1.getWidth() / 2;
         int centerCoin1Y = coin1Y + coin1.getHeight() / 2;
-        if (centerCoin1X >= birdX && centerCoin1X <= birdX + bird.getWidth() &&
-                centerCoin1Y >= birdY && centerCoin1Y <= birdY + bird.getHeight())
+        if (centerCoin1X >= birdX && centerCoin1X <= birdX + player.getWidth() &&
+                centerCoin1Y >= birdY && centerCoin1Y <= birdY + player.getHeight())
         {
             coin1X = screenWidth + 200;
             score += 10;
@@ -256,8 +252,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerCoin2X = coin2X + coin2.getWidth() / 2;
         int centerCoin2Y = coin2Y + coin2.getHeight() / 2;
-        if (centerCoin2X >= birdX && centerCoin2X <= birdX + bird.getWidth() &&
-                centerCoin2Y >= birdY && centerCoin2Y <= birdY + bird.getHeight())
+        if (centerCoin2X >= birdX && centerCoin2X <= birdX + player.getWidth() &&
+                centerCoin2Y >= birdY && centerCoin2Y <= birdY + player.getHeight())
         {
             coin2X = screenWidth + 200;
             score += 10;
@@ -285,8 +281,8 @@ public class GameActivity extends AppCompatActivity {
             secondHandler = new Handler();
             secondRunnable = () -> {
                 birdX = birdX + (screenWidth / 300);
-                bird.setX(birdX);
-                bird.setY(screenHeight / 2f);
+                player.setX(birdX);
+                player.setY(screenHeight / 2f);
                 if (birdX <= screenWidth) {
                     secondHandler.postDelayed(secondRunnable, 20);
                 } else {
@@ -310,5 +306,29 @@ public class GameActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    private void initializeMaps() {
+        // Background image map
+        backgroundImage2 = R.drawable.background_image2;
+        backgroundImage3 = R.drawable.background_image3;
+        backgroundImage4 = R.drawable.background_image4;
+        backgroundImage5 = R.drawable.background_image5;
+        backgroundMap = new HashMap<>();
+        backgroundMap.put(2, backgroundImage2);
+        backgroundMap.put(3, backgroundImage3);
+        backgroundMap.put(4, backgroundImage4);
+        backgroundMap.put(5, backgroundImage5);
+
+        // Player skin map
+        player2 = R.drawable.player2;
+        player3 = R.drawable.player3;
+        player4 = R.drawable.player4;
+        player5 = R.drawable.player5;
+        playerMap = new HashMap<>();
+        playerMap.put(2, player2);
+        playerMap.put(3, player3);
+        playerMap.put(4, player4);
+        playerMap.put(5, player5);
     }
 }
