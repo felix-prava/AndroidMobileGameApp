@@ -6,18 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class ShopActivity extends AppCompatActivity {
 
-    private Button skinOne, skinTwo, skinThree, skinFour, skinFive;
+    private Button buttonSkinOne, buttonSkinTwo, buttonSkinThree, buttonSkinFour, buttonSkinFive;
     private TextView totalCoins;
     private SharedPreferences sharedPreferences;
 
     private int playerTwo, playerThree, playerFour, playerFive, coins;
-    private final int targetSkinTwo = 100, getTargetSkinThree = 1000, targetSkinFour = 10000, targetSkinFive = 50000;
+    private final int targetSkinTwo = 100, targetSkinThree = 1000, targetSkinFour = 10000, targetSkinFive = 50000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,106 +31,58 @@ public class ShopActivity extends AppCompatActivity {
         playerFive = sharedPreferences.getInt("skinFive", 0);
 
         totalCoins = findViewById(R.id.shopCoins);
-        skinOne = findViewById(R.id.buttonShop1);
-        skinTwo = findViewById(R.id.buttonShop2);
-        skinThree = findViewById(R.id.buttonShop3);
-        skinFour = findViewById(R.id.buttonShop4);
-        skinFive = findViewById(R.id.buttonShop5);
+        buttonSkinOne = findViewById(R.id.buttonShop1);
+        buttonSkinTwo = findViewById(R.id.buttonShop2);
+        buttonSkinThree = findViewById(R.id.buttonShop3);
+        buttonSkinFour = findViewById(R.id.buttonShop4);
+        buttonSkinFive = findViewById(R.id.buttonShop5);
 
         totalCoins.setText("Coins: " + coins);
 
-        skinOne.setOnClickListener(v -> {
+        buttonSkinOne.setOnClickListener(v -> {
             sharedPreferences.edit().putInt("playerSkin", 1).apply();
             skinIsChangedMessage();
         });
 
-        skinTwo.setOnClickListener(v -> {
-            if (playerTwo > 0) {
-                sharedPreferences.edit().putInt("playerSkin", 2).apply();
-                skinIsChangedMessage();
-            } else {
-                if (coins >= targetSkinTwo) {
-                    sharedPreferences.edit().putInt("playerSkin", 2).apply();
-                    sharedPreferences.edit().putInt("skinTwo", 1).apply();
-                    coins -= targetSkinTwo;
-                    totalCoins.setText("Coins: " + coins);
-                    sharedPreferences.edit().putInt("coins", coins).apply();
-                    skinTwo.setText("Select");
-                    skinIsChangedMessage();
-                } else {
-                    needMoreCoinsMessage(targetSkinTwo);
-                }
+        buttonSkinTwo.setOnClickListener(v -> {
+            boolean skinIsChanged = skinIsChanged(playerTwo, targetSkinTwo, buttonSkinTwo, "skinTwo", 2);
+            if (skinIsChanged) {
+                playerTwo = 1;
             }
         });
 
-        skinThree.setOnClickListener(v -> {
-            if (playerThree > 0) {
-                sharedPreferences.edit().putInt("playerSkin", 3).apply();
-                skinIsChangedMessage();
-            } else {
-                if (coins >= getTargetSkinThree) {
-                    sharedPreferences.edit().putInt("playerSkin", 3).apply();
-                    sharedPreferences.edit().putInt("skinThree", 1).apply();
-                    coins -= getTargetSkinThree;
-                    totalCoins.setText("Coins: " + coins);
-                    sharedPreferences.edit().putInt("coins", coins).apply();
-                    skinThree.setText("Select");
-                    skinIsChangedMessage();
-                } else {
-                    needMoreCoinsMessage(getTargetSkinThree);
-                }
+        buttonSkinThree.setOnClickListener(v -> {
+            boolean skinIsChanged = skinIsChanged(playerThree, targetSkinThree, buttonSkinThree, "skinThree", 3);
+            if (skinIsChanged) {
+                playerThree = 1;
             }
         });
 
-        skinFour.setOnClickListener(v -> {
-            if (playerFour > 0) {
-                sharedPreferences.edit().putInt("playerSkin", 4).apply();
-                skinIsChangedMessage();
-            } else {
-                if (coins >= targetSkinFour) {
-                    sharedPreferences.edit().putInt("playerSkin", 4).apply();
-                    sharedPreferences.edit().putInt("skinFour", 1).apply();
-                    coins -= targetSkinFour;
-                    totalCoins.setText("Coins: " + coins);
-                    sharedPreferences.edit().putInt("coins", coins).apply();
-                    skinFour.setText("Select");
-                    skinIsChangedMessage();
-                } else {
-                    needMoreCoinsMessage(targetSkinFour);
-                }
+        buttonSkinFour.setOnClickListener(v -> {
+            boolean skinIsChanged = skinIsChanged(playerFour, targetSkinFour, buttonSkinFour, "skinFour", 4);
+            if (skinIsChanged) {
+                playerFour = 1;
             }
         });
 
-        skinFive.setOnClickListener(v -> {
-            if (playerFour > 0) {
-                sharedPreferences.edit().putInt("playerSkin", 5).apply();
-                skinIsChangedMessage();
-            } else {
-                if (coins >= targetSkinFive) {
-                    sharedPreferences.edit().putInt("playerSkin", 5).apply();
-                    sharedPreferences.edit().putInt("skinFive", 1).apply();
-                    coins -= targetSkinFive;
-                    totalCoins.setText("Coins: " + coins);
-                    sharedPreferences.edit().putInt("coins", coins).apply();
-                    skinFive.setText("Select");
-                    skinIsChangedMessage();
-                } else {
-                    needMoreCoinsMessage(targetSkinFive);
-                }
+        buttonSkinFive.setOnClickListener(v -> {
+            boolean skinIsChanged = skinIsChanged(playerFive, targetSkinFive, buttonSkinFive, "skinFive", 5);
+            if (skinIsChanged) {
+                playerFive = 1;
             }
         });
 
         if (playerTwo > 0) {
-            skinTwo.setText("Select");
+            buttonSkinTwo.setText("Select");
         }
         if (playerThree > 0) {
-            skinThree.setText("Select");
+            buttonSkinThree.setText("Select");
         }
         if (playerFour > 0) {
-            skinFour.setText("Select");
+            buttonSkinFour.setText("Select");
         }
         if (playerFive > 0) {
-            skinFive.setText("Select");
+            buttonSkinFive.setText("Select");
         }
 
 
@@ -153,5 +104,27 @@ public class ShopActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
         builder.create().show();
+    }
+
+    public boolean skinIsChanged(int playerWasPurchased, int targetCoins, Button button, String skinName, int skinIndex) {
+        if (playerWasPurchased > 0) {
+            sharedPreferences.edit().putInt("playerSkin", skinIndex).apply();
+            skinIsChangedMessage();
+            return true;
+        } else {
+            if (coins >= targetCoins) {
+                sharedPreferences.edit().putInt("playerSkin", skinIndex).apply();
+                sharedPreferences.edit().putInt(skinName, 1).apply();
+                coins -= targetCoins;
+                totalCoins.setText("Coins: " + coins);
+                sharedPreferences.edit().putInt("coins", coins).apply();
+                button.setText("Select");
+                skinIsChangedMessage();
+                return true;
+            } else {
+                needMoreCoinsMessage(targetCoins);
+                return false;
+            }
+        }
     }
 }
