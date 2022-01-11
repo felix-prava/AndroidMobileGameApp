@@ -24,6 +24,7 @@
         android:id="@+id/buttonEasyDifficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/purple_500"
         android:text="Easy"
         app:layout_constraintBottom_toTopOf="@+id/buttonMediumDifficulty"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,11 +54,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonMediumDifficulty" />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/teal_700"
-        android:text="Button"
-        tools:layout_editor_absoluteY="174dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
