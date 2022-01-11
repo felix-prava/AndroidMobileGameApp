@@ -153,17 +153,17 @@ public class GameActivity extends AppCompatActivity {
 
         // For the second half of the game
         if (!firstSpeedUpgrade && score >= targetScore / 2) {
-            enemyOneSpeed -= 15;
-            enemyTwoSpeed -= 15;
-            enemyThreeSpeed -= 15;
+            enemyOneSpeed -= 17;
+            enemyTwoSpeed -= 17;
+            enemyThreeSpeed -= 17;
             firstSpeedUpgrade = true;
         }
 
         // For the last third of the game
         if (!secondSpeedUpgrade && score >= 2 * targetScore / 3) {
-            enemyOneSpeed -= 18;
-            enemyTwoSpeed -= 18;
-            enemyThreeSpeed -= 18;
+            enemyOneSpeed -= 22;
+            enemyTwoSpeed -= 22;
+            enemyThreeSpeed -= 22;
             secondSpeedUpgrade = true;
         }
         enemy1X = enemy1X - (screenWidth / enemyOneSpeed);
