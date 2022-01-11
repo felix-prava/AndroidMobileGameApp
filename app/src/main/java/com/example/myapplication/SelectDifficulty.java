@@ -38,19 +38,22 @@ public class SelectDifficulty extends AppCompatActivity {
 
 
         buttonEasyDifficulty.setOnClickListener(v -> {
-            sharedPreferences.edit().putInt("difficulty", 1).apply();
+            difficulty = 1;
+            sharedPreferences.edit().putInt("difficulty", difficulty).apply();
             updateButtons(difficulty);
             displayMessage("You are playing on easy mode. You should be fine!");
         });
 
         buttonMediumDifficulty.setOnClickListener(v -> {
-            sharedPreferences.edit().putInt("difficulty", 2).apply();
+            difficulty = 2;
+            sharedPreferences.edit().putInt("difficulty", difficulty).apply();
             updateButtons(difficulty);
             displayMessage("Medium difficulty.. for sure you have some skills!");
         });
 
         buttonHardDifficulty.setOnClickListener(v -> {
-            sharedPreferences.edit().putInt("difficulty", 3).apply();
+            difficulty = 3;
+            sharedPreferences.edit().putInt("difficulty", difficulty).apply();
             updateButtons(difficulty);
             displayMessage("You are one of the best players! Good luck..you'll need it!");
         });
