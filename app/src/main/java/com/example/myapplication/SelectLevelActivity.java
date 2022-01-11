@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 public class SelectLevelActivity extends AppCompatActivity {
 
     private Button buttonLevel1, buttonLevel2, buttonLevel3, buttonLevel4, buttonLevel5;
     private Button buttonLevel6, buttonLevel7, buttonLevel8, buttonLevel9, buttonLevel10;
     private SharedPreferences sharedPreferences;
+    private ArrayList<Button> buttonArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,19 @@ public class SelectLevelActivity extends AppCompatActivity {
         buttonLevel8 = findViewById(R.id.buttonLevel8);
         buttonLevel9 = findViewById(R.id.buttonLevel9);
         buttonLevel10 = findViewById(R.id.buttonLevel10);
+        buttonArrayList = new ArrayList<>();
+        buttonArrayList.add(buttonLevel1);
+        buttonArrayList.add(buttonLevel2);
+        buttonArrayList.add(buttonLevel3);
+        buttonArrayList.add(buttonLevel4);
+        buttonArrayList.add(buttonLevel5);
+        buttonArrayList.add(buttonLevel6);
+        buttonArrayList.add(buttonLevel7);
+        buttonArrayList.add(buttonLevel8);
+        buttonArrayList.add(buttonLevel9);
+        buttonArrayList.add(buttonLevel10);
+
+        unlockLevels(level);
 
         buttonLevel1.setOnClickListener(v -> {
             Intent intent = new Intent(SelectLevelActivity.this, MainActivity.class);
@@ -140,6 +156,13 @@ public class SelectLevelActivity extends AppCompatActivity {
                 levelIsLocked(9);
             }
         });
+    }
+
+    private void unlockLevels(int level) {
+        for (int i = 0; i < level; i++) {
+            Button button = buttonArrayList.get(i);
+            button.setBackgroundColor(getResources().getColor(R.color.teal_700));
+        }
     }
 
     public void levelIsLocked(int level) {
