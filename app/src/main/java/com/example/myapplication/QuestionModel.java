@@ -4,9 +4,6 @@ public class QuestionModel {
 
     private String question, answer, wrongAnswer1, wrongAnswer2, wrongAnswer3;
 
-    public QuestionModel() {
-    }
-
     public QuestionModel(String question, String answer, String wrongAnswer1, String wrongAnswer2, String wrongAnswer3) {
         this.question = question;
         this.answer = answer;

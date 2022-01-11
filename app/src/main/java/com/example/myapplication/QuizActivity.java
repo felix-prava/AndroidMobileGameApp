@@ -87,6 +87,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void displayQuestion(int questionCount) {
+        updateButtons();
         questionCountTextView.setText("Question: " + (questionCount + 1));
         question.setText(questionsList.get(questionCount).getQuestion());
 
@@ -109,33 +110,20 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    public void displayCorrectMessage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setTitle("");
-        builder.setMessage("Wrong! The correct answer is " + questionsList.get(questionCount).getAnswer());
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
-        builder.create().show();
-    }
-
-    public void displayAnswerIsCorrect() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(QuizActivity.this);
-        builder.setTitle("");
-        builder.setMessage("The answer is correct!");
-        builder.setCancelable(false);
-        builder.setPositiveButton("OK", (dialog, which) -> dialog.cancel());
-        builder.create().show();
-    }
-
     public void buttonClickedAction(Button button) {
         if (!userAlreadyAnswered) {
+            button.setBackgroundColor(getResources().getColor(R.color.design_default_color_error));
+            correctButton.setBackgroundColor(getResources().getColor(R.color.teal_200));
             if (button == correctButton) {
                 coinsEarned += 10;
-                displayAnswerIsCorrect();
-            } else {
-                displayCorrectMessage();
             }
             userAlreadyAnswered = true;
+        }
+    }
+
+    private void updateButtons() {
+        for (Button button : buttonsList) {
+            button.setBackgroundColor(getResources().getColor(R.color.purple_500));
         }
     }
 }

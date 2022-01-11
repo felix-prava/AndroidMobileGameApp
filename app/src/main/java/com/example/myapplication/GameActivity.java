@@ -20,13 +20,13 @@ import java.util.Map;
 public class GameActivity extends AppCompatActivity {
 
     private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3;
-    private TextView textViewScore, textViewStartInfo;
+    private TextView textViewScore, textViewStartInfo, textViewLevel;
     private ConstraintLayout constraintLayout;
-    private boolean touchControl = false, beginControl = false;
+    private boolean touchControl = false, beginControl = false, firstSpeedUpgrade = false, secondSpeedUpgrade = false;
     private Runnable runnable, secondRunnable;
     private Handler handler, secondHandler;
     private SharedPreferences sharedPreferences;
-    private int targetScore, level, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
+    private int targetScore, level, difficulty, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
     private Map<Integer, Integer> backgroundMap, playerMap;
 
     // positions
@@ -45,6 +45,9 @@ public class GameActivity extends AppCompatActivity {
     // players
     int player2, player3, player4, player5;
 
+    // objects speed
+    int enemyOneSpeed = 150, enemyTwoSpeed = 140, enemyThreeSpeed = 130, coinOneSpeed = 120, coinTwoSpeed = 110;
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,16 @@ public class GameActivity extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         int playerSkin = sharedPreferences.getInt("playerSkin", 1);
+        difficulty = sharedPreferences.getInt("difficulty", 2);
+        if (difficulty == 1) {
+            enemyOneSpeed += 27;
+            enemyTwoSpeed += 27;
+            enemyThreeSpeed += 27;
+        } else if (difficulty == 3) {
+            enemyOneSpeed -= 27;
+            enemyTwoSpeed -= 27;
+            enemyThreeSpeed -= 27;
+        }
 
         player = findViewById(R.id.imageViewPlayer);
         initializeMaps();
@@ -73,6 +86,8 @@ public class GameActivity extends AppCompatActivity {
         heart3 = findViewById(R.id.imageViewHeart3);
         textViewScore = findViewById(R.id.textViewScore);
         textViewStartInfo = findViewById(R.id.textViewStartInfo);
+        textViewLevel = findViewById(R.id.textViewLevel);
+        textViewLevel.setText("Level " + level);
         constraintLayout = findViewById(R.id.constraintLayoutGame);
 
         int backgroundImage = (int) ((Math.random() * 4) + 1);
@@ -136,7 +151,22 @@ public class GameActivity extends AppCompatActivity {
         coin1.setVisibility(View.VISIBLE);
         coin2.setVisibility(View.VISIBLE);
 
-        enemy1X = enemy1X - (screenWidth / 150);
+        // For the second half of the game
+        if (!firstSpeedUpgrade && score >= targetScore / 2) {
+            enemyOneSpeed -= 17;
+            enemyTwoSpeed -= 17;
+            enemyThreeSpeed -= 17;
+            firstSpeedUpgrade = true;
+        }
+
+        // For the last third of the game
+        if (!secondSpeedUpgrade && score >= 2 * targetScore / 3) {
+            enemyOneSpeed -= 22;
+            enemyTwoSpeed -= 22;
+            enemyThreeSpeed -= 22;
+            secondSpeedUpgrade = true;
+        }
+        enemy1X = enemy1X - (screenWidth / enemyOneSpeed);
         if (enemy1X < 0) {
             enemy1X = screenWidth + 200;
             enemy1Y = (int) Math.floor(Math.random() * screenHeight);
@@ -151,7 +181,7 @@ public class GameActivity extends AppCompatActivity {
         enemy1.setX(enemy1X);
         enemy1.setY(enemy1Y);
 
-        enemy2X = enemy2X - (screenWidth / 140);
+        enemy2X = enemy2X - (screenWidth / enemyTwoSpeed);
         if (enemy2X < 0) {
             enemy2X = screenWidth + 200;
             enemy2Y = (int) Math.floor(Math.random() * screenHeight);
@@ -166,7 +196,7 @@ public class GameActivity extends AppCompatActivity {
         enemy2.setX(enemy2X);
         enemy2.setY(enemy2Y);
 
-        enemy3X = enemy3X - (screenWidth / 130);
+        enemy3X = enemy3X - (screenWidth / enemyThreeSpeed);
         if (enemy3X < 0) {
             enemy3X = screenWidth + 200;
             enemy3Y = (int) Math.floor(Math.random() * screenHeight);
@@ -181,7 +211,7 @@ public class GameActivity extends AppCompatActivity {
         enemy3.setX(enemy3X);
         enemy3.setY(enemy3Y);
 
-        coin1X = coin1X - (screenWidth / 120);
+        coin1X = coin1X - (screenWidth / coinOneSpeed);
         if (coin1X < 0) {
             coin1X = screenWidth + 200;
             coin1Y = (int) Math.floor(Math.random() * screenHeight);
@@ -196,7 +226,7 @@ public class GameActivity extends AppCompatActivity {
         coin1.setX(coin1X);
         coin1.setY(coin1Y);
 
-        coin2X = coin2X - (screenWidth / 110);
+        coin2X = coin2X - (screenWidth / coinTwoSpeed);
         if (coin2X < 0) {
             coin2X = screenWidth + 200;
             coin2Y = (int) Math.floor(Math.random() * screenHeight);

@@ -15,7 +15,8 @@ public class ShopActivity extends AppCompatActivity {
     private TextView totalCoins;
     private SharedPreferences sharedPreferences;
 
-    private int playerTwo, playerThree, playerFour, playerFive, coins;
+    private int coins;
+    private boolean playerTwoWasPurchased, playerThreeWasPurchased, playerFourWasPurchased, playerFiveWasPurchased;
     private final int targetSkinTwo = 100, targetSkinThree = 1000, targetSkinFour = 10000, targetSkinFive = 50000;
 
     @Override
@@ -25,10 +26,10 @@ public class ShopActivity extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences("game", Context.MODE_PRIVATE);
         coins = sharedPreferences.getInt("coins", 0);
-        playerTwo = sharedPreferences.getInt("skinTwo", 0);
-        playerThree = sharedPreferences.getInt("skinThree", 0);
-        playerFour = sharedPreferences.getInt("skinFour", 0);
-        playerFive = sharedPreferences.getInt("skinFive", 0);
+        playerTwoWasPurchased = sharedPreferences.getBoolean("playerNumberTwo", false);
+        playerThreeWasPurchased = sharedPreferences.getBoolean("playerNumberThree", false);
+        playerFourWasPurchased = sharedPreferences.getBoolean("playerNumberFour", false);
+        playerFiveWasPurchased = sharedPreferences.getBoolean("playerNumberFive", false);
 
         totalCoins = findViewById(R.id.shopCoins);
         buttonSkinOne = findViewById(R.id.buttonShop1);
@@ -45,43 +46,43 @@ public class ShopActivity extends AppCompatActivity {
         });
 
         buttonSkinTwo.setOnClickListener(v -> {
-            boolean skinIsChanged = skinIsChanged(playerTwo, targetSkinTwo, buttonSkinTwo, "skinTwo", 2);
+            boolean skinIsChanged = skinIsChanged(playerTwoWasPurchased, targetSkinTwo, buttonSkinTwo, "playerNumberTwo", 2);
             if (skinIsChanged) {
-                playerTwo = 1;
+                playerTwoWasPurchased = true;
             }
         });
 
         buttonSkinThree.setOnClickListener(v -> {
-            boolean skinIsChanged = skinIsChanged(playerThree, targetSkinThree, buttonSkinThree, "skinThree", 3);
+            boolean skinIsChanged = skinIsChanged(playerThreeWasPurchased, targetSkinThree, buttonSkinThree, "playerNumberThree", 3);
             if (skinIsChanged) {
-                playerThree = 1;
+                playerThreeWasPurchased = true;
             }
         });
 
         buttonSkinFour.setOnClickListener(v -> {
-            boolean skinIsChanged = skinIsChanged(playerFour, targetSkinFour, buttonSkinFour, "skinFour", 4);
+            boolean skinIsChanged = skinIsChanged(playerFourWasPurchased, targetSkinFour, buttonSkinFour, "playerNumberFour", 4);
             if (skinIsChanged) {
-                playerFour = 1;
+                playerFourWasPurchased = true;
             }
         });
 
         buttonSkinFive.setOnClickListener(v -> {
-            boolean skinIsChanged = skinIsChanged(playerFive, targetSkinFive, buttonSkinFive, "skinFive", 5);
+            boolean skinIsChanged = skinIsChanged(playerFiveWasPurchased, targetSkinFive, buttonSkinFive, "playerNumberFive", 5);
             if (skinIsChanged) {
-                playerFive = 1;
+                playerFiveWasPurchased = true;
             }
         });
 
-        if (playerTwo > 0) {
+        if (playerTwoWasPurchased) {
             buttonSkinTwo.setText("Select");
         }
-        if (playerThree > 0) {
+        if (playerThreeWasPurchased) {
             buttonSkinThree.setText("Select");
         }
-        if (playerFour > 0) {
+        if (playerFourWasPurchased) {
             buttonSkinFour.setText("Select");
         }
-        if (playerFive > 0) {
+        if (playerFiveWasPurchased) {
             buttonSkinFive.setText("Select");
         }
 
@@ -106,15 +107,15 @@ public class ShopActivity extends AppCompatActivity {
         builder.create().show();
     }
 
-    public boolean skinIsChanged(int playerWasPurchased, int targetCoins, Button button, String skinName, int skinIndex) {
-        if (playerWasPurchased > 0) {
+    public boolean skinIsChanged(boolean playerWasPurchased, int targetCoins, Button button, String skinName, int skinIndex) {
+        if (playerWasPurchased) {
             sharedPreferences.edit().putInt("playerSkin", skinIndex).apply();
             skinIsChangedMessage();
             return true;
         } else {
             if (coins >= targetCoins) {
                 sharedPreferences.edit().putInt("playerSkin", skinIndex).apply();
-                sharedPreferences.edit().putInt(skinName, 1).apply();
+                sharedPreferences.edit().putBoolean(skinName, true).apply();
                 coins -= targetCoins;
                 totalCoins.setText("Coins: " + coins);
                 sharedPreferences.edit().putInt("coins", coins).apply();

@@ -5,11 +5,15 @@
       <map>
         <entry key="app/src/main/res/drawable/background_start_button.xml" value="0.12447916666666667" />
         <entry key="app/src/main/res/drawable/button_again_background.xml" value="0.19635416666666666" />
-        <entry key="app/src/main/res/layout/activity_game.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_game.xml" value="0.26124081974657143" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main_menu.xml" value="0.15502588773244189" />
+        <entry key="app/src/main/res/layout/activity_quiz.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_quiz_result.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_result.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/layout/activity_select_difficulty.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_select_level.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_shop.xml" value="0.25" />
       </map>
     </option>
   </component>
