@@ -30,8 +30,8 @@ public class GameActivity extends AppCompatActivity {
     private Map<Integer, Integer> backgroundMap, playerMap;
 
     // positions
-    int birdX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
-    int birdY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y;
+    int playerX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
+    int playerY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y;
 
     // screen's dimensions
     int screenWidth, screenHeight;
@@ -107,8 +107,8 @@ public class GameActivity extends AppCompatActivity {
                     screenWidth = (int) constraintLayout.getWidth();
                     screenHeight = (int) constraintLayout.getHeight();
                     // get bird's position
-                    birdX = (int) player.getX();
-                    birdY = (int) player.getY();
+                    playerX = (int) player.getX();
+                    playerY = (int) player.getY();
 
                     handler = new Handler();
                     runnable = () -> {
@@ -131,17 +131,17 @@ public class GameActivity extends AppCompatActivity {
 
     public void moveBirdTo() {
         if (touchControl) {
-            birdY -= (screenHeight / 50);
+            playerY -= (screenHeight / 50);
         } else {
-            birdY += (screenHeight / 50);
+            playerY += (screenHeight / 50);
         }
-        if (birdY <= 0) {
-            birdY = 0;
+        if (playerY <= 0) {
+            playerY = 0;
         }
-        if (birdY >= screenHeight - player.getHeight()) {
-            birdY = screenHeight - player.getHeight();
+        if (playerY >= screenHeight - player.getHeight()) {
+            playerY = screenHeight - player.getHeight();
         }
-        player.setY(birdY);
+        player.setY(playerY);
     }
 
     public void enemyControl() {
@@ -245,8 +245,8 @@ public class GameActivity extends AppCompatActivity {
     public void collisionControl() {
         int centerEnemy1X = enemy1X + enemy1.getWidth() / 2;
         int centerEnemy1Y = enemy1Y + enemy1.getHeight() / 2;
-        if (centerEnemy1X >= birdX && centerEnemy1X <= birdX + player.getWidth() &&
-            centerEnemy1Y >= birdY && centerEnemy1Y <= birdY + player.getHeight())
+        if (centerEnemy1X >= playerX && centerEnemy1X <= playerX + player.getWidth() &&
+            centerEnemy1Y >= playerY && centerEnemy1Y <= playerY + player.getHeight())
         {
             enemy1X = screenWidth + 200;
             lives--;;
@@ -254,8 +254,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerEnemy2X = enemy2X + enemy2.getWidth() / 2;
         int centerEnemy2Y = enemy2Y + enemy2.getHeight() / 2;
-        if (centerEnemy2X >= birdX && centerEnemy2X <= birdX + player.getWidth() &&
-                centerEnemy2Y >= birdY && centerEnemy2Y <= birdY + player.getHeight())
+        if (centerEnemy2X >= playerX && centerEnemy2X <= playerX + player.getWidth() &&
+                centerEnemy2Y >= playerY && centerEnemy2Y <= playerY + player.getHeight())
         {
             enemy2X = screenWidth + 200;
             lives--;;
@@ -263,8 +263,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerEnemy3X = enemy3X + enemy3.getWidth() / 2;
         int centerEnemy3Y = enemy3Y + enemy3.getHeight() / 2;
-        if (centerEnemy3X >= birdX && centerEnemy3X <= birdX + player.getWidth() &&
-                centerEnemy3Y >= birdY && centerEnemy3Y <= birdY + player.getHeight())
+        if (centerEnemy3X >= playerX && centerEnemy3X <= playerX + player.getWidth() &&
+                centerEnemy3Y >= playerY && centerEnemy3Y <= playerY + player.getHeight())
         {
             enemy3X = screenWidth + 200;
             lives--;;
@@ -272,8 +272,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerCoin1X = coin1X + coin1.getWidth() / 2;
         int centerCoin1Y = coin1Y + coin1.getHeight() / 2;
-        if (centerCoin1X >= birdX && centerCoin1X <= birdX + player.getWidth() &&
-                centerCoin1Y >= birdY && centerCoin1Y <= birdY + player.getHeight())
+        if (centerCoin1X >= playerX && centerCoin1X <= playerX + player.getWidth() &&
+                centerCoin1Y >= playerY && centerCoin1Y <= playerY + player.getHeight())
         {
             coin1X = screenWidth + 200;
             score += 10;
@@ -282,8 +282,8 @@ public class GameActivity extends AppCompatActivity {
 
         int centerCoin2X = coin2X + coin2.getWidth() / 2;
         int centerCoin2Y = coin2Y + coin2.getHeight() / 2;
-        if (centerCoin2X >= birdX && centerCoin2X <= birdX + player.getWidth() &&
-                centerCoin2Y >= birdY && centerCoin2Y <= birdY + player.getHeight())
+        if (centerCoin2X >= playerX && centerCoin2X <= playerX + player.getWidth() &&
+                centerCoin2Y >= playerY && centerCoin2Y <= playerY + player.getHeight())
         {
             coin2X = screenWidth + 200;
             score += 10;
@@ -310,10 +310,10 @@ public class GameActivity extends AppCompatActivity {
 
             secondHandler = new Handler();
             secondRunnable = () -> {
-                birdX = birdX + (screenWidth / 300);
-                player.setX(birdX);
+                playerX = playerX + (screenWidth / 300);
+                player.setX(playerX);
                 player.setY(screenHeight / 2f);
-                if (birdX <= screenWidth) {
+                if (playerX <= screenWidth) {
                     secondHandler.postDelayed(secondRunnable, 20);
                 } else {
                     secondHandler.removeCallbacks(secondRunnable);
