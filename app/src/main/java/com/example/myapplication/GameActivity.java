@@ -31,10 +31,12 @@ public class GameActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int targetScore, level, difficulty, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
     private Map<Integer, Integer> backgroundMap, playerMap;
+    
     private boolean shieldActivated = false;
+    
     // positions
-    int playerX, enemy1X, enemy2X, enemy3X, coin1X, coin2X,shieldX;
-    int playerY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y,shieldY;
+    int playerX, enemy1X, enemy2X, enemy3X, coin1X, coin2X, shieldX;
+    int playerY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y, shieldY;
 
     // screen's dimensions
     int screenWidth, screenHeight;
@@ -49,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
     int player2, player3, player4, player5;
 
     // objects speed
-    int enemyOneSpeed = 150, enemyTwoSpeed = 140, enemyThreeSpeed = 130, coinOneSpeed = 120, coinTwoSpeed = 110,shieldSpeed=115;
+    int enemyOneSpeed = 150, enemyTwoSpeed = 140, enemyThreeSpeed = 130, coinOneSpeed = 120, coinTwoSpeed = 110, shieldSpeed=115;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -92,9 +94,9 @@ public class GameActivity extends AppCompatActivity {
         textViewStartInfo = findViewById(R.id.textViewStartInfo);
         textViewLevel = findViewById(R.id.textViewLevel);
         textViewLevel.setText("Level " + level);
-        textViewShieldTimer=findViewById(R.id.textViewShieldTimer);
+        textViewShieldTimer =findViewById(R.id.textViewShieldTimer);
         constraintLayout = findViewById(R.id.constraintLayoutGame);
-        imageViewShieldTimer= findViewById(R.id.imageViewShieldTimer);
+        imageViewShieldTimer = findViewById(R.id.imageViewShieldTimer);
 
         int backgroundImage = (int) ((Math.random() * 4) + 1);
         if (backgroundImage > 1) {
