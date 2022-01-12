@@ -22,7 +22,7 @@ import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
-    private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3,shield, imageViewShieldTimer;
+    private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3, shield, imageViewShieldTimer;
     private TextView textViewScore, textViewStartInfo, textViewLevel, textViewShieldTimer;
     private ConstraintLayout constraintLayout;
     private boolean touchControl = false, beginControl = false, firstSpeedUpgrade = false, secondSpeedUpgrade = false;
@@ -322,10 +322,8 @@ public class GameActivity extends AppCompatActivity {
             shieldX = screenWidth + 10000;
             shieldActivated = true;
             imageViewShieldTimer.setVisibility(View.VISIBLE);
-//            textViewShieldTimer.setText("5");
-
+            
             new CountDownTimer(6000, 1000) {
-
                 public void onTick(long millisUntilFinished) {
                     textViewShieldTimer.setText("" + millisUntilFinished / 1000);
                 }
@@ -334,7 +332,6 @@ public class GameActivity extends AppCompatActivity {
                     imageViewShieldTimer.setVisibility(View.INVISIBLE);
                     textViewShieldTimer.setText("");
                 }
-
             }.start();
         }
 
