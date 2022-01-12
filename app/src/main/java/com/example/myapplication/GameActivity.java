@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,11 +17,13 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameActivity extends AppCompatActivity {
 
-    private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3;
-    private TextView textViewScore, textViewStartInfo, textViewLevel;
+    private ImageView player, enemy1, enemy2, enemy3, coin1, coin2, heart1, heart2, heart3, shield, imageViewShieldTimer;
+    private TextView textViewScore, textViewStartInfo, textViewLevel, textViewShieldTimer;
     private ConstraintLayout constraintLayout;
     private boolean touchControl = false, beginControl = false, firstSpeedUpgrade = false, secondSpeedUpgrade = false;
     private Runnable runnable, secondRunnable;
@@ -28,10 +31,12 @@ public class GameActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int targetScore, level, difficulty, backgroundImage2, backgroundImage3, backgroundImage4, backgroundImage5;
     private Map<Integer, Integer> backgroundMap, playerMap;
-
+    
+    private boolean shieldActivated = false;
+    
     // positions
-    int playerX, enemy1X, enemy2X, enemy3X, coin1X, coin2X;
-    int playerY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y;
+    int playerX, enemy1X, enemy2X, enemy3X, coin1X, coin2X, shieldX;
+    int playerY, enemy1Y, enemy2Y, enemy3Y, coin1Y, coin2Y, shieldY;
 
     // screen's dimensions
     int screenWidth, screenHeight;
@@ -46,7 +51,7 @@ public class GameActivity extends AppCompatActivity {
     int player2, player3, player4, player5;
 
     // objects speed
-    int enemyOneSpeed = 150, enemyTwoSpeed = 140, enemyThreeSpeed = 130, coinOneSpeed = 120, coinTwoSpeed = 110;
+    int enemyOneSpeed = 150, enemyTwoSpeed = 140, enemyThreeSpeed = 130, coinOneSpeed = 120, coinTwoSpeed = 110, shieldSpeed=115;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -79,6 +84,7 @@ public class GameActivity extends AppCompatActivity {
         enemy1 = findViewById(R.id.imageViewEnemy1);
         enemy2 = findViewById(R.id.imageViewEnemy2);
         enemy3 = findViewById(R.id.imageViewEnemy3);
+        shield = findViewById(R.id.imageViewShield);
         coin1 = findViewById(R.id.imageViewCoin);
         coin2 = findViewById(R.id.imageViewCoin2);
         heart1 = findViewById(R.id.imageViewHeart1);
@@ -88,7 +94,9 @@ public class GameActivity extends AppCompatActivity {
         textViewStartInfo = findViewById(R.id.textViewStartInfo);
         textViewLevel = findViewById(R.id.textViewLevel);
         textViewLevel.setText("Level " + level);
+        textViewShieldTimer =findViewById(R.id.textViewShieldTimer);
         constraintLayout = findViewById(R.id.constraintLayoutGame);
+        imageViewShieldTimer = findViewById(R.id.imageViewShieldTimer);
 
         int backgroundImage = (int) ((Math.random() * 4) + 1);
         if (backgroundImage > 1) {
@@ -150,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
         enemy3.setVisibility(View.VISIBLE);
         coin1.setVisibility(View.VISIBLE);
         coin2.setVisibility(View.VISIBLE);
+        shield.setVisibility(View.VISIBLE);
 
         // For the second half of the game
         if (!firstSpeedUpgrade && score >= targetScore / 2) {
@@ -240,6 +249,21 @@ public class GameActivity extends AppCompatActivity {
         }
         coin2.setX(coin2X);
         coin2.setY(coin2Y);
+
+        shieldX = shieldX - (screenWidth / shieldSpeed);
+        if (shieldX < 0) {
+            shieldX = screenWidth + 3000;
+            shieldY = (int) Math.floor(Math.random() * screenHeight);
+
+            if (shieldY <= 0) {
+                shieldY = 0;
+            }
+            if (shieldY >= screenHeight - shield.getHeight()) {
+                shieldY = screenHeight - shield.getHeight();
+            }
+        }
+        shield.setX(shieldX);
+        shield.setY(shieldY);
     }
 
     public void collisionControl() {
@@ -249,7 +273,7 @@ public class GameActivity extends AppCompatActivity {
             centerEnemy1Y >= playerY && centerEnemy1Y <= playerY + player.getHeight())
         {
             enemy1X = screenWidth + 200;
-            lives--;;
+            if(!shieldActivated) lives--;;
         }
 
         int centerEnemy2X = enemy2X + enemy2.getWidth() / 2;
@@ -258,7 +282,7 @@ public class GameActivity extends AppCompatActivity {
                 centerEnemy2Y >= playerY && centerEnemy2Y <= playerY + player.getHeight())
         {
             enemy2X = screenWidth + 200;
-            lives--;;
+            if(!shieldActivated) lives--;;
         }
 
         int centerEnemy3X = enemy3X + enemy3.getWidth() / 2;
@@ -267,7 +291,7 @@ public class GameActivity extends AppCompatActivity {
                 centerEnemy3Y >= playerY && centerEnemy3Y <= playerY + player.getHeight())
         {
             enemy3X = screenWidth + 200;
-            lives--;;
+            if(!shieldActivated) lives--;;
         }
 
         int centerCoin1X = coin1X + coin1.getWidth() / 2;
@@ -290,6 +314,27 @@ public class GameActivity extends AppCompatActivity {
             textViewScore.setText("" + score);
         }
 
+        int centerShieldX = shieldX + shield.getWidth() / 2;
+        int centerShieldY = shieldY + shield.getHeight() / 2;
+        if (centerShieldX >= playerX && centerShieldX <= playerX + player.getWidth() &&
+                centerShieldY >= playerY && centerShieldY <= playerY + player.getHeight())
+        {
+            shieldX = screenWidth + 10000;
+            shieldActivated = true;
+            imageViewShieldTimer.setVisibility(View.VISIBLE);
+            
+            new CountDownTimer(6000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    textViewShieldTimer.setText("" + millisUntilFinished / 1000);
+                }
+                public void onFinish() {
+                    shieldActivated = false;
+                    imageViewShieldTimer.setVisibility(View.INVISIBLE);
+                    textViewShieldTimer.setText("");
+                }
+            }.start();
+        }
+
         if (lives > 0 && score < targetScore) {
             if (lives == 2) {
                 heart1.setImageResource(R.drawable.black_heart);
@@ -307,6 +352,7 @@ public class GameActivity extends AppCompatActivity {
             enemy3.setVisibility(View.INVISIBLE);
             coin1.setVisibility(View.INVISIBLE);
             coin2.setVisibility(View.INVISIBLE);
+            shield.setVisibility(View.INVISIBLE);
 
             secondHandler = new Handler();
             secondRunnable = () -> {
